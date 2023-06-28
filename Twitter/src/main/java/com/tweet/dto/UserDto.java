@@ -10,6 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User {
+public class UserDto {
     private List<Tweet> tweets;
 }
