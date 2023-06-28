@@ -18,6 +18,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDTO) {
+        UserDto createdUser = userService.createUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
     @PostMapping("/{userId}")
     public ResponseEntity<TweetDto> createTweet(@RequestBody TweetDto tweetDTO, @PathVariable Long userId) {
         TweetDto createdTweet = userService.createTweet(userId, tweetDTO);
@@ -28,11 +33,7 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDTO) {
-        UserDto createdUser = userService.createUser(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-    }
+
 
     @GetMapping("/{userId}/tweets")
     public ResponseEntity<List<TweetDto>> getTweetsByUser(@PathVariable Long userId) {
@@ -51,8 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/tweets/{tweetId}")
-    public ResponseEntity<TweetDto> updateTweet(
-            @PathVariable Long userId, @PathVariable Long tweetId, @RequestBody TweetDto tweetDTO) {
+    public ResponseEntity<TweetDto> updateTweet(@PathVariable Long userId, @PathVariable Long tweetId, @RequestBody TweetDto tweetDTO) {
         TweetDto updatedTweet = userService.updateTweet(userId, tweetId, tweetDTO);
         if (updatedTweet != null) {
             return ResponseEntity.ok(updatedTweet);
