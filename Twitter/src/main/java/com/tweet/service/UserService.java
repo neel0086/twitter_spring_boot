@@ -1,5 +1,7 @@
 package com.tweet.service;
 
+import com.tweet.Mapper.TweetMapper;
+import com.tweet.Mapper.UserMapper;
 import com.tweet.dto.TweetDto;
 import com.tweet.dto.UserDto;
 import com.tweet.model.Tweet;
@@ -8,6 +10,7 @@ import com.tweet.repository.TweetRepository;
 import com.tweet.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +33,24 @@ public class UserService {
         user.setTweets(new ArrayList<>());
         User savedUser = userRepository.save(user);
         return UserMapper.toDTO(savedUser);
+    }
+
+    public TweetDto createTweet(Long userId, TweetDto tweetDto) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            // Create a new Tweet
+            Tweet tweet = new Tweet();
+            tweet.setTimestamp(LocalDateTime.now());
+            tweet.setContent(tweetDto.getContent());
+            tweet.setUser(user);
+            // Set other tweet attributes
+
+            Tweet savedTweet = tweetRepository.save(tweet);
+            return TweetMapper.toDTO(savedTweet);
+        }
+        return null;
     }
 
     public List<TweetDto> getTweetsByUser(Long userId) {
@@ -58,10 +79,7 @@ public class UserService {
         if (optionalTweet.isPresent()) {
             Tweet tweet = optionalTweet.get();
             if (tweet.getUser().getId().equals(userId)) {
-                // Update tweet attributes from tweetDTO
                 tweet.setContent(tweetDTO.getContent());
-                // ...
-
                 Tweet savedTweet = tweetRepository.save(tweet);
                 return TweetMapper.toDTO(savedTweet);
             }

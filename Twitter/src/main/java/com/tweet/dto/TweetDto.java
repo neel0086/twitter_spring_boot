@@ -12,6 +12,4 @@ import java.time.LocalDateTime;
 @Data
 public class TweetDto {
     private String content;
-    private LocalDateTime timestamp;
-    private User user;
 }

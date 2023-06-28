@@ -18,6 +18,16 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping("/{userId}")
+    public ResponseEntity<TweetDto> createTweet(@RequestBody TweetDto tweetDTO, @PathVariable Long userId) {
+        TweetDto createdTweet = userService.createTweet(userId, tweetDTO);
+        if (createdTweet != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdTweet);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDTO) {
         UserDto createdUser = userService.createUser(userDTO);

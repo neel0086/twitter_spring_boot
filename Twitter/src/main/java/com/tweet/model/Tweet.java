@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="User")
+@Table(name="Tweet")
 public class Tweet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
